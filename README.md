@@ -1,3 +1,29 @@
+> [!IMPORTANT]
+> **This is Bermuda with bug fixes that are waiting to be merged upstream - nothing else.**
+> It behaves exactly like [agittins/bermuda](https://github.com/agittins/bermuda): same integration,
+> same `bermuda` domain, same options, same stored data. Each fix below is an open pull request
+> on the original repository; as each one is merged there it is dropped here, and once they all
+> are, this repository is retired. No features are added and nothing about stored data changes,
+> so you can switch back to the original at any time.
+>
+> | Fix | Upstream PR |
+> |---|---|
+> | Metadevices now copy their source's name, manufacturer and beacon fields (the copy loop was a no-op) | [#832](https://github.com/agittins/bermuda/pull/832) |
+> | A duplicate entry in the prune list no longer raises `KeyError` and aborts the update cycle | [#833](https://github.com/agittins/bermuda/pull/833) |
+> | One scanner that cannot be resolved no longer stops entity creation for every other scanner | [#835](https://github.com/agittins/bermuda/pull/835) |
+> | IRKs are no longer written in full to diagnostics or the debug log | [#840](https://github.com/agittins/bermuda/pull/840) |
+> | `bermuda.dump_devices` requires an admin when the call carries a user | [#842](https://github.com/agittins/bermuda/pull/842) |
+> | Changing a proxy's area takes effect without a reload (and the "no AREA" repair clears) | [#857](https://github.com/agittins/bermuda/pull/857) |
+> | A proxy is matched to its own registry entry, not a neighbour's with an adjacent MAC (#859) | [#860](https://github.com/agittins/bermuda/pull/860) |
+> | A proxy's own entry beats a router integration's entry for the same MAC (wrong name, "no AREA" repair, #722) | [#862](https://github.com/agittins/bermuda/pull/862) |
+>
+> **Install:** HACS → Integrations → ⋮ → Custom repositories → add
+> `https://github.com/davidcoulson/bermuda-patched` (Integration), then install
+> *Bermuda BLE Trilateration (patched)* in place of the original (remove the original's HACS entry
+> first; your Bermuda configuration stays). **Switch back** the same way in reverse.
+> Problems with this build go to [this repository's issues](https://github.com/davidcoulson/bermuda-patched/issues);
+> everything else, and all the documentation, is the original's.
+
 ![Bermuda Logo](img/logo@2x.png)
 
 [![Open your Home Assistant instance and open a repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=agittins&repository=bermuda&category=Integration)
