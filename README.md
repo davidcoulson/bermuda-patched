@@ -1,5 +1,5 @@
 > [!IMPORTANT]
-> **This is Bermuda with bug fixes that are waiting to be merged upstream - nothing else.**
+> **This is Bermuda with bug fixes that are waiting to be merged upstream - nothing else.** Most are mine; a few are other contributors' open pull requests, credited below.
 > It behaves exactly like [agittins/bermuda](https://github.com/agittins/bermuda): same integration,
 > same `bermuda` domain, same options, same stored data. Each fix below is an open pull request
 > on the original repository; as each one is merged there it is dropped here, and once they all
@@ -16,6 +16,10 @@
 > | Changing a proxy's area takes effect without a reload (and the "no AREA" repair clears) | [#857](https://github.com/agittins/bermuda/pull/857) |
 > | A proxy is matched to its own registry entry, not a neighbour's with an adjacent MAC (#859) | [#860](https://github.com/agittins/bermuda/pull/860) |
 > | A proxy's own entry beats a router integration's entry for the same MAC (wrong name, "no AREA" repair, #722) | [#862](https://github.com/agittins/bermuda/pull/862) |
+> | Random BLE addresses are classified correctly (a bitwise `&` where `==` was meant left random-static ones mislabelled) | [#863](https://github.com/agittins/bermuda/pull/863) |
+> | Device pruning no longer raises `IndexError` when too few devices can be pruned, and prunes the right number | [#848](https://github.com/agittins/bermuda/pull/848) (by @barneyonline) |
+> | Scanners are found with Home Assistant's supported registry lookup (the old one is removed in 2027.9) | [#847](https://github.com/agittins/bermuda/pull/847) (by @barneyonline) |
+> | Scanner lists in the options and calibration screens are sorted by name | [#836](https://github.com/agittins/bermuda/pull/836) (by @BrawnyBravo) |
 >
 > **Install:** HACS → Integrations → ⋮ → Custom repositories → add
 > `https://github.com/davidcoulson/bermuda-patched` (Integration), then install
