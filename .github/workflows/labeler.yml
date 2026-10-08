@@ -10,6 +10,10 @@ jobs:
   labeler:
     name: Labeler
     runs-on: ubuntu-latest
+    # A new repository's token is read-only; syncing labels needs this, and only this.
+    permissions:
+      contents: read
+      issues: write
     steps:
       - name: Check out the repository
         uses: actions/checkout@v7
