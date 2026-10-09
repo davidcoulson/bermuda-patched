@@ -10,6 +10,10 @@ on:
   schedule:
     - cron: "0 0 * * *"
 
+# Read-only token for every job: none of them writes to the repository.
+permissions:
+  contents: read
+
 env:
   DEFAULT_PYTHON: 3.14
   UV_SYSTEM_PYTHON: 1
