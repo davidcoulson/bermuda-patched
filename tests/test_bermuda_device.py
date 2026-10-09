@@ -513,3 +513,24 @@ async def test_scanner_resolves_real_registry(
     assert bermuda_scanner.address_ble_mac == "11:22:33:44:55:66"
     assert bermuda_scanner.name_devreg == "esphome"
     assert "uses `device_registry.devices`" not in caplog.text
+
+
+def test_scanner_integration_is_read_from_config_entry_id_on_current_cores(mock_coordinator):
+    """From Home Assistant 2026.10 a device has one ``config_entry_id`` and
+    reading ``config_entries`` is deprecated: use the new attribute, and do
+    not touch the old one when the new one is there."""
+    from types import SimpleNamespace
+
+    class NewCoreDevice:
+        config_entry_id = "e-esp"
+
+        @property
+        def config_entries(self):
+            raise AssertionError("config_entries read on a core that has config_entry_id")
+
+    _with_domains(mock_coordinator, {"e-esp": "esphome", "e-tp": "tplink"})
+    scanner = BermudaDevice(address="AA:BB:CC:DD:EE:12", coordinator=mock_coordinator)
+    assert scanner._from_scanner_integration(NewCoreDevice()) is True
+    # An older core: no config_entry_id, the set of entries is read instead.
+    assert scanner._from_scanner_integration(SimpleNamespace(config_entries={"e-tp"})) is False
+    assert scanner._from_scanner_integration(SimpleNamespace(config_entries={"e-tp", "e-esp"})) is True
