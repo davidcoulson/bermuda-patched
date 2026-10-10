@@ -37,11 +37,11 @@ Your Bermuda configuration, devices and settings stay as they are.
 | Device pruning no longer raises `IndexError` when too few devices can be pruned, and prunes the right number | [#848](https://github.com/agittins/bermuda/pull/848) (by @barneyonline) |
 | Scanners are found with Home Assistant's supported registry lookup (the old one is removed in 2027.9) | [#847](https://github.com/agittins/bermuda/pull/847) (by @barneyonline) |
 | Scanner lists in the options and calibration screens are sorted by name | [#836](https://github.com/agittins/bermuda/pull/836) (by @BrawnyBravo) |
-| An attenuation of 0 (or NaN) in the options no longer aborts every update cycle; both distance settings are validated | upstream PR to come |
-| A ref_power change shows the new distances at once (the cache-bypass check could never pass) | upstream PR to come |
-| A truncated iBeacon advert no longer creates a bogus `None_None_None` beacon | upstream PR to come |
-| iBeacons nobody tracks are pruned once they go stale, instead of piling up forever | upstream PR to come |
-| Deleting a tracked device stops tracking it (iBeacon ids were split at an underscore, and the device list re-enabled it every cycle) | upstream PR to come |
+| An attenuation of 0 (or NaN) in the options no longer aborts every update cycle; both distance settings are validated | [#864](https://github.com/agittins/bermuda/pull/864) |
+| A ref_power change shows the new distances at once (the cache-bypass check could never pass) | [#865](https://github.com/agittins/bermuda/pull/865) |
+| A truncated iBeacon advert no longer creates a bogus `None_None_None` beacon | [#866](https://github.com/agittins/bermuda/pull/866) |
+| iBeacons nobody tracks are pruned once they go stale, instead of piling up forever | [#867](https://github.com/agittins/bermuda/pull/867) |
+| Deleting a tracked device stops tracking it (iBeacon ids were split at an underscore, and the device list re-enabled it every cycle) | [#868](https://github.com/agittins/bermuda/pull/868) |
 
 Problems with this build: [this repository's issues](https://github.com/davidcoulson/bermuda-patched/issues). Everything else, including all the documentation below, is the original's.
 
