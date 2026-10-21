@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import re
 from types import SimpleNamespace
 from unittest.mock import MagicMock, patch
 
@@ -262,9 +263,7 @@ def test_redact_data_redacts_every_address_in_one_string():
             "aa:bb:cc:dd:ee:01": "aa::SCANNER_1::01",
             "aa:bb:cc:dd:ee:02": "aa::CFG_MAC_2::02",
         },
-        _redact_generic_re=BermudaDataUpdateCoordinator.__init__.__globals__["re"].compile(
-            r"(?P<start>[0-9A-Fa-f]{2})[:_-]([0-9A-Fa-f]{2}[:_-]){4}(?P<end>[0-9A-Fa-f]{2})"
-        ),
+        _redact_generic_re=re.compile(r"(?P<start>[0-9A-Fa-f]{2})[:_-]([0-9A-Fa-f]{2}[:_-]){4}(?P<end>[0-9A-Fa-f]{2})"),
         _redact_generic_sub=r"\g<start>:xx:xx:xx:xx:\g<end>",
         redaction_list_update=lambda: None,
     )
