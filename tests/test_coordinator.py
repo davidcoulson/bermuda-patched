@@ -255,6 +255,25 @@ def test_prune_devices_tolerates_duplicate_prune_entries(monkeypatch):
     assert fresh_irk in coordinator.devices
 
 
+def test_redact_data_redacts_every_address_in_one_string():
+    """Replacements compose: a string holding two known addresses loses both."""
+    coordinator = SimpleNamespace(
+        redactions={
+            "aa:bb:cc:dd:ee:01": "aa::SCANNER_1::01",
+            "aa:bb:cc:dd:ee:02": "aa::CFG_MAC_2::02",
+        },
+        _redact_generic_re=BermudaDataUpdateCoordinator.__init__.__globals__["re"].compile(
+            r"(?P<start>[0-9A-Fa-f]{2})[:_-]([0-9A-Fa-f]{2}[:_-]){4}(?P<end>[0-9A-Fa-f]{2})"
+        ),
+        _redact_generic_sub=r"\g<start>:xx:xx:xx:xx:\g<end>",
+        redaction_list_update=lambda: None,
+    )
+    out = BermudaDataUpdateCoordinator.redact_data(
+        coordinator, "AA:BB:CC:DD:EE:01 heard by aa:bb:cc:dd:ee:02 and 11:22:33:44:55:66"
+    )
+    assert out == "aa::SCANNER_1::01 heard by aa::CFG_MAC_2::02 and 11:xx:xx:xx:xx:66"
+
+
 def _scanner_coordinator(scanners, known):
     """A stand-in coordinator whose bluetooth manager reports `scanners`."""
     devices = {}
