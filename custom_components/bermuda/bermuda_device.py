@@ -52,7 +52,7 @@ from .const import (
     METADEVICE_PRIVATE_BLE_DEVICE,
     METADEVICE_TYPE_IBEACON_SOURCE,
 )
-from .util import mac_math_offset, mac_norm
+from .util import mac_math_offset_carry, mac_norm
 from .util import mac_octet_offset as _mac_octet_offset
 
 # Integrations that provide Bluetooth scanners. When two registry entries
@@ -199,7 +199,7 @@ class BermudaDevice:
                     self._coordinator.config_entry.async_on_unload(
                         _pble_coord.async_track_service_info(self.async_handle_pble_callback, _irk_bytes)
                     )
-                    _LOGGER.debug("Private BLE Callback registered for %s, %s", self.name, self.address)
+                    _LOGGER.debug("Private BLE Callback registered for %s, %s...", self.name, self.address[:4])
                     #
                     # Also register a callback with our own, which can fake the PBLE callbacks.
                     self._coordinator.config_entry.async_on_unload(
@@ -359,7 +359,7 @@ class BermudaDevice:
         # range of possible addresses, and see what we find in the device registry,
         # on the *assumption* that there won't be overlap between devices.
         for offset in range(-3, 3):
-            if (altmac := mac_math_offset(self.address, offset)) is not None:
+            if (altmac := mac_math_offset_carry(self.address, offset)) is not None:
                 connlist.add(("bluetooth", altmac.upper()))
                 connlist.add(("mac", altmac))
                 maclist.add(altmac)
@@ -498,8 +498,8 @@ class BermudaDevice:
         # 'em all in and let the loop sort it out.
         for mac in (
             self.address_ble_mac,  # BLE mac, if known
-            mac_math_offset(self.address_wifi_mac, 2),  # WIFI+2=BLE
-            mac_math_offset(self.address_wifi_mac, -1),  # ETHER-1=BLE
+            mac_math_offset_carry(self.address_wifi_mac, 2),  # WIFI+2=BLE
+            mac_math_offset_carry(self.address_wifi_mac, -1),  # ETHER-1=BLE
         ):
             if (
                 mac is not None
