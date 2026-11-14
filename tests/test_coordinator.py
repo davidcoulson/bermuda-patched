@@ -341,3 +341,19 @@ def test_refresh_scanners_serves_a_pending_request_once():
 
     assert calls == [True, False, True]
     assert coordinator._scanner_init_pending is False
+
+
+def test_configured_irk_is_never_echoed_by_redaction():
+    """A configured IRK (32 hex) must be masked to a short prefix, not copied into the replacement."""
+    from types import SimpleNamespace
+
+    irk = "0123456789abcdef0123456789abcdef"
+    fake = SimpleNamespace(
+        scanner_list=[],
+        redactions={},
+        options={"configured_devices": [irk]},
+        devices={},
+    )
+    BermudaDataUpdateCoordinator.redaction_list_update(fake)
+    assert irk in fake.redactions
+    assert irk not in fake.redactions[irk]

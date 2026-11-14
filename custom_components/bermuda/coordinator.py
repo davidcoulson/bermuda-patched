@@ -1714,9 +1714,11 @@ class BermudaDataUpdateCoordinator(DataUpdateCoordinator):
                 elif len(address) == 17:
                     for altmac in mac_explode_formats(address):
                         self.redactions[altmac] = f"{address[:2]}::CFG_MAC_{i}::{address[-2:]}"
+                elif len(address) == 32:  # an IRK (hex): never echo more than a short prefix
+                    self.redactions[address] = f"{address[:4]}::CFG_IRK_{i}"
                 else:
-                    # Don't know what it is, but not a mac.
-                    self.redactions[address] = f"CFG_OTHER_{i}_{address}"
+                    # Don't know what it is, but not a mac. Never echo it back.
+                    self.redactions[address] = f"CFG_OTHER_{i}"
         _LOGGER.debug("Redact confdevs: %ss, %d items", monotonic_time_coarse() - _stamp, len(self.redactions))
         # EVERYTHING ELSE
         for non_lower_address, device in self.devices.items():
