@@ -44,6 +44,7 @@ Your Bermuda configuration, devices and settings stay as they are.
 | Deleting a tracked device stops tracking it (iBeacon ids were split at an underscore, and the device list re-enabled it every cycle) | [#868](https://github.com/agittins/bermuda/pull/868) |
 | Fewer recorder rows: Distance is republished only when it moves by max(0.2 m, 10%), and Floor no longer carries the area attributes | [#869](https://github.com/agittins/bermuda/pull/869) |
 | A Private BLE (IRK) device is placed right after a restart, instead of waiting minutes for its next changed advert | [#895](https://github.com/agittins/bermuda/pull/895) |
+| Scanners with the same name (e.g. several tablets or speakers) are listed separately in calibration, so each can be calibrated | [#853](https://github.com/agittins/bermuda/pull/853) |
 
 Problems with this build: [this repository's issues](https://github.com/davidcoulson/bermuda-patched/issues). Everything else, including all the documentation below, is the original's.
 
