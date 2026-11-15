@@ -8,18 +8,20 @@
 
 **Why it exists:** pull requests to Bermuda take a long time to be merged, and some of these bugs make the integration hard to use in the meantime: proxies matched to the wrong device, repairs that never clear, crashes in the update loop. This build lets you run the fixes now, with an easy way back.
 
-## Switch from regular Bermuda
+## Install
 
-Your Bermuda configuration, devices and settings stay as they are.
+These steps are for Home Assistant 2026.11 and later, where HACS is built in as the **Marketplace**. On older versions with HACS installed separately, the same steps work in HACS.
 
-1. **Remove the original:** in HACS, open *Bermuda BLE Trilateration* → ⋮ → **Remove**. Do *not* delete the integration under Settings → Devices & services; that is what keeps your configuration.
-2. **Add this repository:** HACS → ⋮ → **Custom repositories** → paste `https://github.com/davidcoulson/bermuda-patched`, choose type **Integration**, then **Add**. Or use this button, which opens it in your HACS:
+**Switching from regular Bermuda?** Your configuration, devices and calibration stay as they are. They live in Home Assistant's config entry, not in the integration's files, and this build uses the same `bermuda` domain. You install it over the top of the original. Nothing is removed first, because the Marketplace won't remove an integration that's in use.
 
-   [![Open this repository in HACS](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=davidcoulson&repository=bermuda-patched&category=Integration)
-3. **Install it:** search HACS for *Bermuda BLE Trilateration (patched)* → **Download**.
-4. **Restart Home Assistant.** Bermuda loads as before; HACS shows the version as `0.8.7-patched.N`.
+1. **Back up** (Settings → System → Backups), in case you want to go back to exactly where you were.
+2. **Add this repository:** in the Marketplace, add `https://github.com/davidcoulson/bermuda-patched` as a custom repository of type **Integration**. Adding custom repositories needs a GitHub account connected in the Marketplace panel.
+3. **Download it:** open *Bermuda BLE Trilateration (patched)* and download the latest `0.8.7-patched.N`. It writes into the same `custom_components/bermuda` folder as the original.
+4. **Restart Home Assistant.** Bermuda loads as before. On a fresh install, add it now under Settings → Devices & services → **Add integration** → *Bermuda BLE Trilateration*.
 
-**To switch back,** do the same in reverse: remove the patched one in HACS, download the original *Bermuda BLE Trilateration*, and restart.
+**Don't** use **Delete and uninstall** on either Bermuda entry. That deletes the integration entry, and your calibration with it. After switching, the Marketplace shows the original as not installed and the patched one as installed. That's expected.
+
+**To switch back,** download the original *Bermuda BLE Trilateration* in the Marketplace (again over the top) and restart.
 
 ## What's fixed
 
