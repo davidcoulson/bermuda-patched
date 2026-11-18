@@ -14,6 +14,7 @@ to the combination of the scanner and the device it is reporting.
 
 from __future__ import annotations
 
+import math
 from typing import TYPE_CHECKING, Final
 
 from bluetooth_data_tools import monotonic_time_coarse
@@ -149,6 +150,12 @@ class BermudaAdvert:
                 "Replacing stale scanner device %s with %s", self.scanner_device.__repr__(), scanner_device.__repr__()
             )
             self.apply_new_scanner(scanner_device)
+
+        # A real BLE RSSI is always negative. >= 0 (or NaN/inf) is a "not available" sentinel
+        # (127 from Android, 0 from some stacks); it would turn into ~0 m, so drop it.
+        if not (math.isfinite(advertisementdata.rssi) and advertisementdata.rssi < 0):
+            _LOGGER.debug("Ignoring invalid rssi %s from %s", advertisementdata.rssi, scanner_device.name)
+            return
 
         scanner = self.scanner_device
         new_stamp: float | None = None
@@ -334,6 +341,8 @@ class BermudaAdvert:
         # its own ref_power without need.
         if value != self.ref_power:
             self.ref_power = value
+            if self.rssi is None:  # no valid reading yet (eg first advert had an invalid rssi)
+                return None
             return self._update_raw_distance(False)
         return self.rssi_distance_raw
 
