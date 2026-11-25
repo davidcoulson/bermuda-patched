@@ -194,6 +194,7 @@ async def test_options_flow_calibration2_scanner_sorting(hass: HomeAssistant):
     # and Scanner E has no history so sorts last.
     assert results_rows == [" Scanner ", "---", "Scanner D", "scanner a", "Scanner C", "Scanner E"]
 
+
 async def test_calibration2_duplicate_scanner_names_keep_offsets_independent(hass: HomeAssistant):
     """Duplicate friendly names get distinct labels and save by scanner address."""
     addresses = ["aa:bb:cc:dd:ee:01", "aa:bb:cc:dd:ee:02", "aa:bb:cc:dd:ee:03"]
