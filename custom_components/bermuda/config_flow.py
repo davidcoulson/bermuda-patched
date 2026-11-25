@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import sys
 from typing import TYPE_CHECKING
 
 import voluptuous as vol
@@ -63,20 +64,20 @@ if TYPE_CHECKING:
 # from homeassistant.helpers.aiohttp_client import async_create_clientsession
 
 
-def _finite(value: float) -> float:
-    """Reject NaN and infinities (vol.Coerce(float) accepts "nan" and "inf")."""
-    if not usable_number(value):
-        msg = "must be a finite number"
-        raise vol.Invalid(msg)
-    return value
-
+# The options forms are sent to the frontend as a field list, and Home
+# Assistant can only describe built-in validators there: a plain function in
+# a schema makes the whole form fail to load (issue 27). So NaN and the
+# infinities (which vol.Coerce(float) accepts as "nan" and "inf") are kept out
+# with vol.Range: a NaN fails every comparison, and the largest float as a
+# bound shuts out both infinities.
+_FLOAT_MAX = sys.float_info.max
 
 # Path-loss exponent: rssi_to_metres divides by it, so zero (or NaN) aborted
 # every update cycle. Any positive finite value works; real-world ones sit
-# around 2-4. No upper bound: a value that works today must still save.
-ATTENUATION_SCHEMA = vol.All(vol.Coerce(float), _finite, vol.Range(min=0, min_included=False))
+# around 2-4. No practical upper bound: a value that works today must still save.
+ATTENUATION_SCHEMA = vol.All(vol.Coerce(float), vol.Range(min=0, min_included=False, max=_FLOAT_MAX))
 # RSSI expected at 1 m, in dBm: any finite value.
-REF_POWER_SCHEMA = vol.All(vol.Coerce(float), _finite)
+REF_POWER_SCHEMA = vol.All(vol.Coerce(float), vol.Range(min=-_FLOAT_MAX, max=_FLOAT_MAX))
 
 
 def _attenuation_usable(value: float) -> bool:
